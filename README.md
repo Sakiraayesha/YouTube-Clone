@@ -3,6 +3,7 @@
 A YouTube inspired video sharing platform with basic functionalities of YouTube; built using MERN stack.
 
 Features:
+
 •	Sign up / Sign in / Sign out
 •	Google Authentication 
 •	Upload video (with title, description, tags & thumbnail)
@@ -19,6 +20,7 @@ Features:
 •	Switch between Dark & Light theme
 
 Technologies:
+
 •	MERN Stack
 •	Redux Toolkit
 •	JWT Cookie
