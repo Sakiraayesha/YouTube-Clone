@@ -18,7 +18,7 @@ const connect = () => {
     })
     .catch((err) => {
         throw err
-    })
+    }) 
 }
 
 app.use(express.json())

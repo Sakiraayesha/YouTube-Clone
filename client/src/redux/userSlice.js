@@ -36,11 +36,22 @@ export const userSlice = createSlice({
         else{
             state.currentUser.subscribedChannels.push(action.payload)
         }
-    }
+    },
+    updateStart: (state) => {
+        state.loading = true
+    },
+    updateSuccess: (state, action) => {
+        state.loading = false
+        state.currentUser = action.payload
+    },
+    updateFail: (state) => {
+        state.loading = false
+        state.error = true
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { loginStart, loginSuccess, loginFail, logOut, subscription} = userSlice.actions
+export const { loginStart, loginSuccess, loginFail, logOut, subscription, updateStart, updateSuccess, updateFail} = userSlice.actions
 
 export default userSlice.reducer

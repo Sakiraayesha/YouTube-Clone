@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link, useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
-import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
+import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
 import SubscriptionsOutlinedIcon from '@mui/icons-material/SubscriptionsOutlined';
 import VideoLibraryOutlinedIcon from '@mui/icons-material/VideoLibraryOutlined';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
@@ -19,10 +19,11 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from '../redux/userSlice';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 
 const Container = styled.div`
     // flex: 1.5;
-    width: 200px;
+    width: 210px;
     background-color: ${({theme}) => theme.bgLighter};
     color: ${({theme}) => theme.text};
     font-size: 14px;
@@ -48,24 +49,26 @@ const Container = styled.div`
     }
 `;
 const Wrapper = styled.div`
-    padding: 18px 26px;
+    padding: 18px 0px;
 `;
 const Item = styled.div`
     display: flex;
     align-items: center;
     gap: 20px;
     cursor: pointer;
-    padding: 7.5px 0;
+    padding: 7.5px 26px;
 
     &:hover{
-        background-color: ${({theme}) => theme.soft};;
+        background-color: ${({theme}) => theme.soft};
     }
 `;
 const Hr = styled.hr`
     margin: 15px 0;
     border: 0.5px solid ${({theme}) => theme.soft};
 `;
-const Login = styled.div``;
+const Login = styled.div`
+    padding: 0 22px;
+`;
 const Button = styled.button`
     padding: 5px 15px;
     background-color: transparent;
@@ -84,6 +87,7 @@ const Title = styled.h2`
     font-weight: 500;
     color: #aaaaaa;
     margin-bottom: 20px;
+    padding: 0 26px;
 `;
 
 const Menu = ({darkMode, setDarkMode}) => {
@@ -97,101 +101,111 @@ const Menu = ({darkMode, setDarkMode}) => {
     }
 
     return(
-        <Container>
-            <Wrapper>
-                <Link to ="/" style={{textDecoration:"none", color: "inherit"}}>
-                    <Item>
-                        <HomeIcon/>
-                        Home
-                    </Item>
-                </Link>
-                <Link to ="trending" style={{textDecoration:"none", color: "inherit"}}>
-                    <Item>
-                        <ExploreOutlinedIcon/>
-                        Explore
-                    </Item>
-                </Link>
-                <Link to ="subscriptions" style={{textDecoration:"none", color: "inherit"}}>
-                    <Item>
-                        <SubscriptionsOutlinedIcon/>
-                        Subscriptions
-                    </Item>
-                </Link>
-                <Hr/>
-                <Item>
-                    <VideoLibraryOutlinedIcon/>
-                    Library
-                </Item>
-                <Item>
-                    <HistoryOutlinedIcon/>
-                    History
-                </Item>
-                <Hr/>
-                {!currentUser &&
-                    (
-                        <>
-                        <Login>
-                            Sign in to like videos, comment and subscribe.
-                            <Link to="/signin" style={{textDecoration:"none"}}>
-                                <Button><AccountCircleOutlinedIcon/>SIGN IN</Button>
-                            </Link>
-                        </Login>
-                        <Hr/>
-                        </>
-                    )
-                }
-                <Title>BEST OF CLONETUBE</Title>
-                <Item>
-                    <LibraryMusicOutlinedIcon/>
-                    Music
-                </Item>
-                <Item>
-                    <SportsBasketballOutlinedIcon/>
-                    Sports
-                </Item>
-                <Item>
-                    <SportsEsportsOutlinedIcon/>
-                    Gaming
-                </Item>
-                <Item>
-                    <MovieCreationOutlinedIcon/>
-                    Movies
-                </Item>
-                <Item>
-                    <ArticleOutlinedIcon/>
-                    News
-                </Item>
-                <Item>
-                    <LiveTvOutlinedIcon/>
-                    Live
-                </Item>
-                <Hr/>
-                <Item>
-                    <SettingsOutlinedIcon/>
-                    Settings
-                </Item>
-                <Item>
-                    <OutlinedFlagIcon/>
-                    Report
-                </Item>
-                <Item>
-                    <HelpOutlineOutlinedIcon/>
-                    Help
-                </Item>
-                <Item onClick={() => setDarkMode(!darkMode)}>
-                    <SettingsBrightnessOutlinedIcon/>
-                    {darkMode ? "Light" : "Dark"} Mode
-                </Item>
-                {currentUser &&
-                    (
-                        <Item onClick={handleLogout}>
-                            <LogoutOutlinedIcon/>
-                            Log Out
+        <>
+            <Container>
+                <Wrapper>
+                    <Link to ="/" style={{textDecoration:"none", color: "inherit"}}>
+                        <Item>
+                            <HomeIcon/>
+                            Home
                         </Item>
-                    )
-                }
-            </Wrapper>
-        </Container>
+                    </Link>
+                    <Link to ="trending" style={{textDecoration:"none", color: "inherit"}}>
+                        <Item>
+                            <LocalFireDepartmentRoundedIcon/>
+                            Trending
+                        </Item>
+                    </Link>
+                    <Link to ="subscriptions" style={{textDecoration:"none", color: "inherit"}}>
+                        <Item>
+                            <SubscriptionsOutlinedIcon/>
+                            Subscriptions
+                        </Item>
+                    </Link>
+                    <Hr/>
+                    <Title>MORE FROM YOUTUBE</Title>
+                    <Link to ="studio" style={{textDecoration:"none", color: "inherit"}}>
+                        <Item>
+                            <PlayCircleIcon style={{color: "#cc1a00"}}/>
+                            Creator Studio
+                        </Item>
+                    </Link>
+                    <Hr/>
+                    <Item>
+                        <VideoLibraryOutlinedIcon/>
+                        Library
+                    </Item>
+                    <Item>
+                        <HistoryOutlinedIcon/>
+                        History
+                    </Item>
+                    <Hr/>
+                    {!currentUser &&
+                        (
+                            <>
+                            <Login>
+                                Sign in to like videos, comment and subscribe.
+                                <Link to="/signin" style={{textDecoration:"none"}}>
+                                    <Button><AccountCircleOutlinedIcon/>SIGN IN</Button>
+                                </Link>
+                            </Login>
+                            <Hr/>
+                            </>
+                        )
+                    }
+                    <Title>EXPLORE</Title>
+                    <Item>
+                        <LibraryMusicOutlinedIcon/>
+                        Music
+                    </Item>
+                    <Item>
+                        <SportsBasketballOutlinedIcon/>
+                        Sports
+                    </Item>
+                    <Item>
+                        <SportsEsportsOutlinedIcon/>
+                        Gaming
+                    </Item>
+                    <Item>
+                        <MovieCreationOutlinedIcon/>
+                        Movies
+                    </Item>
+                    <Item>
+                        <ArticleOutlinedIcon/>
+                        News
+                    </Item>
+                    <Item>
+                        <LiveTvOutlinedIcon/>
+                        Live
+                    </Item>
+                    <Hr/>
+                    <Item>
+                        <SettingsOutlinedIcon/>
+                        Settings
+                    </Item>
+                    <Item>
+                        <OutlinedFlagIcon/>
+                        Report
+                    </Item>
+                    <Item>
+                        <HelpOutlineOutlinedIcon/>
+                        Help
+                    </Item>
+                    <Item onClick={() => setDarkMode(!darkMode)}>
+                        <SettingsBrightnessOutlinedIcon/>
+                        {darkMode ? "Light" : "Dark"} Mode
+                    </Item>
+                    {currentUser &&
+                        (
+                            <Item onClick={handleLogout}>
+                                <LogoutOutlinedIcon/>
+                                Log Out
+                            </Item>
+                        )
+                    }
+                </Wrapper>
+            </Container>
+        </>
     ) 
 }
 

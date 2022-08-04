@@ -9,7 +9,9 @@ import {
   Route,
 } from "react-router-dom";
 import { Home } from "./pages/Home";
+import { Channel } from "./pages/Channel";
 import { Video } from "./pages/Video";
+import { Studio } from "./pages/Studio";
 import { SignIn } from "./pages/SignIn";
 import { Search } from "./pages/Search";
 import { useSelector } from "react-redux";
@@ -23,8 +25,8 @@ const Main = styled.div`
 `;
 const Wrapper = styled.div`
   // flex: 8;
-  width: calc(100% - 244px);
-  padding: 22px;
+  width: calc(100% - 210px);
+  // padding: 22px;
   background-color: ${({theme}) => theme.bg};
 `;
 
@@ -47,6 +49,10 @@ function App() {
                   <Route path="subscriptions" element={<Home type="subscriptions" />} />
                   <Route path="search" element={<Search />} />
                   <Route path="signin" element={!currentUser ? <SignIn/> : <Home/>} />
+                  <Route path="studio" element={!currentUser ? <SignIn/> : <Studio/>} />
+                  <Route path="channel">
+                    <Route path=":id" element={<Channel />} />
+                  </Route>
                   <Route path="video">
                     <Route path=":id" element={<Video />} />
                   </Route>

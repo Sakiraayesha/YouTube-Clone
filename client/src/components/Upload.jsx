@@ -15,7 +15,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1;
+    z-index: 2;
 `;
 const Wrapper = styled.div`
     width: 600px;
@@ -28,14 +28,18 @@ const Wrapper = styled.div`
     gap: 20px;
     position: relative;
 `;
-const Close = styled.div`
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer
+const Header = styled.div`
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid ${({theme}) => theme.navBorder};
+    padding-bottom: 15px;
 `;
-const Title = styled.h1`
-    text-align: center
+const Title = styled.h2`
+    font-size: 22px;
+`;
+const Close = styled.div`
+    margin-left: auto;
+    cursor: pointer
 `;
 const Label = styled.label`
     font-size: 14px;
@@ -59,10 +63,13 @@ const Button = styled.button`
     border-radius: 3px;
     border: none;
     padding: 10px 20px;
+    width: 100px;
     font-weight: 500;
+    font-size: 14px;
     cursor: pointer;
-    background-color: ${({theme}) => theme.soft};
-    color: ${({theme}) => theme.textSoft};
+    background-color: #30A5E8;
+    color: #071A25;
+    margin: auto;
 `;
 
 export const Upload = ({setOpen}) => {
@@ -129,27 +136,29 @@ export const Upload = ({setOpen}) => {
     const res = await axios.post("/videos", {...inputs, tags})
     setOpen(false)
     res.status === 200 && navigate(`/video/${res.data._id}`)
-}
+    }
 
   return (
     <Container>
         <Wrapper>
-            <Close onClick={() => setOpen(false)}>X</Close>
-            <Title>Upload a New Video</Title>
+            <Header>
+                <Title>Upload Video</Title>
+                <Close onClick={() => setOpen(false)}>X</Close>
+            </Header>
             <Label>Video:</Label>
             {vidPercentage > 0 ? "Uploading: " + vidPercentage + "%"
             : (
-                <Input type="file" accept="video/*" onChange={(e) => setVideo(e.target.files[0])}/>
+                <Input type="file" accept="video/*" onChange={(e) => setVideo(e.target.files[0])} placeholder="Upload Video"/>
             )}
             <Input type="text" placeholder="Title" name="title" onChange={handleChange}/>
             <Desc rows={8} placeholder="Description" name="desc" onChange={handleChange}/>
             <Input type="text" placeholder="Separate the tags with commas." name="tags"  onChange={handleTags}/>
-            <Label>Image:</Label>
+            <Label>Thumbnail:</Label>
             {imgPercentage > 0 ? "Uploading: " + imgPercentage + "%"
             : (
                 <Input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])}/>
             )}
-            <Button onClick={handleUpload}>Upload</Button>
+            <Button onClick={handleUpload}>UPLOAD</Button>
         </Wrapper>
     </Container>
   )

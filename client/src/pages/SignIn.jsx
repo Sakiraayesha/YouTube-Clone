@@ -15,7 +15,7 @@ const Container = styled.div`
     height: calc(100vh - 56px);
     color: ${({theme}) => theme.text};
 `;
-const Wrapper = styled.div`
+const Wrapper = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,13 +23,17 @@ const Wrapper = styled.div`
     border: 1px solid ${({theme}) => theme.soft};
     padding: 20px 50px;
     gap: 10px;    
+    width: 365px
 `;
-const Title = styled.h1`
-    font-size: 24px;
+const Title = styled.h2`
+    font-size: 22px;
+    font-weight: 500;
 `;
-const SubTitle = styled.h2`
-    font-size: 24px;
+const SubTitle = styled.h3`
+    font-size: 18px;
     font-weight: 300px;
+    font-weight: 400;
+    color: ${({theme}) => theme.textSoft};
 `;
 const Input = styled.input`
     border: 1px solid ${({theme}) => theme.soft};
@@ -44,7 +48,7 @@ const Button = styled.button`
     border: none;
     padding: 10px 20px;
     font-weight: 500;
-    cursor: pointr;
+    cursor: pointer;
     background-color: ${({theme}) => theme.soft};
     color: ${({theme}) => theme.textSoft};
 `;
@@ -53,6 +57,8 @@ const More = styled.div`
     margin-top: 10px;
     font-size: 12px;
     color: ${({theme}) => theme.textSoft};
+    width: 465px;
+    justify-content: space-between;
 `;
 const Links = styled.div`
     margin-left: 50px;
@@ -68,6 +74,18 @@ export const SignIn = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const handleSignup = async (e) => {
+    e.preventDefault()
+    try{
+        const res = await axios.post("/auth/signup", {name, email, password})
+        document.getElementById("authForm").reset();
+    }
+    catch(err)
+    {
+        console.log(err)
+    }
+  }
+
   const handleSignin = async (e) => {
     e.preventDefault()
     dispatch(loginStart())
@@ -82,7 +100,8 @@ export const SignIn = () => {
     }
   }
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (e) => {
+    e.preventDefault()
     dispatch(loginStart())
     signInWithPopup(auth, provider)
     .then((result) => {
@@ -102,7 +121,7 @@ export const SignIn = () => {
 
   return (
     <Container>
-        <Wrapper>
+        <Wrapper id="authForm">
             <Title>Sign in</Title>
             <SubTitle>to continue to CloneTube</SubTitle>
             <Input type="text" placeholder="Username" onChange={e=>setName(e.target.value)}/>
@@ -114,7 +133,7 @@ export const SignIn = () => {
             <Input type="text" placeholder="Username" onChange={e=>setName(e.target.value)}/>
             <Input type="email" placeholder="Email" onChange={e=>setEmail(e.target.value)}/>
             <Input type="password" placeholder="Password" onChange={e=>setPassword(e.target.value)}/>
-            <Button>Sign up</Button>
+            <Button onClick={handleSignup}>Sign up</Button>
         </Wrapper>
         <More>
             English(USA)

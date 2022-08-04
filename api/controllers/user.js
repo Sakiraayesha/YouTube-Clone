@@ -119,3 +119,35 @@ export const dislike = async (req, res, next) => {
     }
 }
 
+//Subscribed Channels
+export const getSubscribedChannels = async (req, res, next) => {
+    try{
+        const user = await User.findById(req.params.id)
+        const subscribedChannels = user.subscribedChannels
+
+        const list = await Promise.all(
+            subscribedChannels.map(async (channelId) => {
+                return await User.find({_id: channelId})
+            })
+        )
+
+        res.status(200).json(list.flat())
+    }
+    catch(err){
+        next(err)
+    }
+}
+
+//Subscription Stats
+export const subscriptionStats = async (req, res) => {
+    const date = new Date();
+    const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
+
+    try{
+        const stats = await Video.count( { createdAt: { $gte: lastMonth }, userId: req.params.id } ); 
+        res.status(200).json(stats);
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}

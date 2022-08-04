@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import ThumbDownIcon from '@mui/icons-material/ThumbDown'
@@ -14,11 +14,12 @@ import { fetchSuccess, like, dislike, fetchFail } from '../redux/videoSlice'
 import { subscription } from '../redux/userSlice'
 import axios from "axios"
 import { format } from "timeago.js"
+import { Link } from 'react-router-dom'
 
 const Container = styled.div`
   display: flex;
   gap: 35px;
-  padding: 10px;
+  padding: 20px 30px;
 `;
 const Content = styled.div`
   flex:4.5;
@@ -82,6 +83,7 @@ const ChannelDetails = styled.div`
 `;
 const ChannelName = styled.span`
   font-weight: 500;
+  color: ${({theme}) => theme.text};
 `;
 const ChannelCounter = styled.span`
   margin-top: 5px;
@@ -92,9 +94,20 @@ const ChannelCounter = styled.span`
 const VideoDesc = styled.p`
   font-size: 14px;
 `;
+const CustomizeButton = styled.button`
+  background-color: #30A5E8;
+  color: #071A25;
+  font-weight: 500;
+  font-size: 14px;
+  border: none;
+  border-radius: 3px;
+  height: max-content;
+  padding: 10px 20px;
+  cursor: pointer;
+`;
 const Subscribe = styled.button`
-  background-color: #cc1a00;
-  color: white;
+  background-color: ${(props) => props.subscribed ? ({theme}) => theme.navBorder : "#cc1a00"};
+  color: ${(props) => props.subscribed ? ({theme}) => theme.textSoft : "#ffffff"};
   font-weight: 500;
   border: none;
   border-radius: 3px;
@@ -109,6 +122,7 @@ export const Video = () => {
   const [ channel, setChannel ] = useState({})
   const dispatch = useDispatch()
   const path = useLocation().pathname.split("/")[2]
+  const effectRan = useRef(false)
 
   useEffect(() => {
     const getVideo = async () => {
@@ -125,6 +139,24 @@ export const Video = () => {
     getVideo()
   },[path, dispatch])
 
+  useEffect(() => {
+    if(effectRan.current === false){
+      const incViews = async () => {
+        try{
+          await axios.put(`/videos/view/${path}`)
+        }
+        catch(err){
+          console.log(err)
+        }
+      }
+      incViews()
+
+      return () => {
+        effectRan.current = true
+      }
+    }  
+  },[])
+  
   const handleLike = async () => {
     await axios.put(`/users/like/${currentVideo._id}`)
     dispatch(like(currentUser._id))
@@ -136,11 +168,11 @@ export const Video = () => {
   }
 
   const handleSubscribe = async () => {
-    currentUser.subscribedChannels.includes(channel._id) 
-    ? await axios.put(`/users/unsubscribe/${channel._id}`)
-    : await axios.put(`/users/subscribe/${channel._id}`)
+    currentUser.subscribedChannels.includes(channel?._id) 
+    ? await axios.put(`/users/unsubscribe/${channel?._id}`)
+    : await axios.put(`/users/subscribe/${channel?._id}`)
 
-    dispatch(subscription(channel._id))
+    dispatch(subscription(channel?._id))
   }
 
   return (
@@ -186,20 +218,25 @@ export const Video = () => {
               <ChannelImage src={channel?.image}/>
             </ImageConatiner>
             <ChannelDetails>
-              <ChannelName>{channel?.name}</ChannelName>
-              <ChannelCounter>{channel?.subrcribers} subscribers</ChannelCounter>
+              <Link to={`/channel/${channel?._id}`} style={{textDecoration: "none"}}>
+                <ChannelName>{channel?.name}</ChannelName>
+              </Link>
+              <ChannelCounter>{channel?.subrcribers} {channel?.subrcribers > 1 ? "subscribers" : "subscriber"}</ChannelCounter>
               <VideoDesc>
                 {currentVideo?.desc}
               </VideoDesc>
             </ChannelDetails>
           </ChannelInfo>
-          <Subscribe onClick={handleSubscribe}>
-            {currentUser && currentUser.subscribedChannels?.includes(channel?._id) ? 
-              "SUBSCRIBED"
-              :
-              "SUBSCRIBE"
-            }
-          </Subscribe>
+          {channel?._id === currentUser?._id 
+            ? (<Link to={`/studio`} style={{textDecoration: "none"}}><CustomizeButton>EDIT VIDEO</CustomizeButton></Link>)
+            : (<Subscribe onClick={handleSubscribe} subscribed={currentUser && currentUser.subscribedChannels?.includes(channel?._id)}>
+                {currentUser && currentUser.subscribedChannels?.includes(channel?._id) ? 
+                  "SUBSCRIBED"
+                  :
+                  "SUBSCRIBE"
+                }
+              </Subscribe>)
+          }
         </Channel>
         <Hr/>
         <Comments videoId={currentVideo?._id}/>

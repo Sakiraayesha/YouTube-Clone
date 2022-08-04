@@ -15,7 +15,11 @@ const UserSchema = new mongoose.Schema({
         type: String
     },
     image: {
-        type: String
+        type: String,
+        default: "/assets/defaultDP.png"
+    },
+    banner: {
+        type: String,
     },
     subrcribers: {
         type: Number,
@@ -27,6 +31,9 @@ const UserSchema = new mongoose.Schema({
     fromGoogle: {
         type: Boolean,
         default: false
+    },
+    desc: {
+        type: String
     }
 }, 
 {

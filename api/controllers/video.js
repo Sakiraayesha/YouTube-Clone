@@ -80,6 +80,17 @@ export const addView = async (req, res, next) => {
     }
 }
 
+//Channel Videos
+export const channelVideos = async (req, res, next) => {
+    try{
+        const videos = await Video.find({userId: req.params.id})
+        res.status(200).json(videos.flat().sort((a,b) => b.createdAt - a.createdAt))
+    }
+    catch(err){
+        next(err)
+    }
+}
+
 //Random
 export const random = async (req, res, next) => {
     try{
@@ -139,6 +150,28 @@ export const search = async (req, res, next) => {
     try{
         const videos = await Video.find({ title: { $regex: query, $options: "i" }}).limit(40)
         res.status(200).json(videos.flat().sort((a,b) => b.createdAt - a.createdAt))
+    }
+    catch(err){
+        next(err)
+    }
+}
+
+//User Latest Video
+export const getLatestVideo = async (req, res, next) => {
+    try{
+        const video = await Video.find({userId: req.params.userId}).sort({ _id: -1 }).limit(1);
+        res.status(200).json(video[0])
+    }
+    catch(err){
+        next(err)
+    }
+}
+
+//User Top Videos
+export const topVideos = async (req, res, next) => {
+    try{
+        const videos = await Video.find({userId: req.params.userId}).sort({ views: -1 }).limit(3)
+        res.status(200).json(videos)
     }
     catch(err){
         next(err)

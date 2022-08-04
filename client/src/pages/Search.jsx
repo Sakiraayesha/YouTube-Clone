@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { Card } from "../components/Card"
 
 const Container = styled.div`
+    padding: 22px;
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));

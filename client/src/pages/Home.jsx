@@ -7,6 +7,7 @@ const Container = styled.div`
     // display: flex;
     // justify-content: space-between;
     // flex-wrap: wrap;
+    padding: 22px;
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));

@@ -64,6 +64,13 @@ const User = styled.div`
     font-weight: 500;
     color: ${({theme}) => theme.text};
 `;
+const ChannelDetail = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    color: ${({theme}) => theme.text};
+`;
 const Avatar = styled.img`
     width: 32px;
     height: 32px;
@@ -110,9 +117,13 @@ const Navbar = () => {
                     {currentUser ? 
                     (
                         <User>
-                            <VideoCallOutlinedIcon onClick={() => setOpen(true)} />
-                            <Avatar src={currentUser.image}/>
-                            {currentUser.name}
+                            <VideoCallOutlinedIcon style={{cursor:"pointer"}} onClick={() => setOpen(true)} />
+                            <Link to={`/channel/${currentUser._id}`} style={{textDecoration:"none"}}>
+                                <ChannelDetail>
+                                    <Avatar src={currentUser.image}/>
+                                    {currentUser.name}
+                                </ChannelDetail>
+                            </Link>
                         </User>
                     )
                     : 
@@ -125,8 +136,7 @@ const Navbar = () => {
                 </Wrapper>
             </Container>
             {open && <Upload setOpen={setOpen} />}
-        </>
-        
+        </> 
     )
 }
 
